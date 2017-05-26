@@ -4,31 +4,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.LogoPosition;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.PolygonOptions;
-import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private MapView mapView;
     private BaiduMap baiduMap;
     private static final String TAG = "MainActivity";
+    private boolean isFirstLocate = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocationClient locationClient = new LocationClient(getApplicationContext());
+        locationClient.registerLocationListener(new MyLocationListener());
         setContentView(R.layout.activity_main);
         mapView = (MapView) findViewById(R.id.bmapView);
         mapView.setLogoPosition(LogoPosition.logoPostionCenterTop);//logo位置
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         float minZoomLevel = baiduMap.getMinZoomLevel();
         Log.e(TAG, "minZoomLevel=" + minZoomLevel + ",maxZoomLevel=" + maxZoomLevel);//E/MainActivity: minZoomLevel=3.0,maxZoomLevel=20.0
 //        baiduMap.setMaxAndMinZoomLevel(20L,3L);//设置比例尺
+
 
         //给指定的地方添加图标
         LatLng point = new LatLng(39.963175, 116.400244);
@@ -111,6 +116,33 @@ public class MainActivity extends AppCompatActivity {
 //        //在地图上添加多边形Option，用于显示
 //        baiduMap.addOverlay(polygonOption);
 
+//        //地图缩放比例
+//        MapStatusUpdate update = MapStatusUpdateFactory.zoomTo(12.5f);
+//        baiduMap.animateMapStatus(update);
+
+    }
+
+    private void navigateTo(BDLocation location){
+        if (isFirstLocate){
+            //地图移到指定的位置
+            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+            Log.e(TAG, "navigateTo:getLatitude="+location.getLatitude()+",getLongitude="+location.getLongitude());
+            MapStatusUpdate update = MapStatusUpdateFactory.newLatLng(latLng);
+            baiduMap.animateMapStatus(update);
+            update = MapStatusUpdateFactory.zoomTo(16f);
+            baiduMap.animateMapStatus(update);
+            isFirstLocate = false;
+        }
+    }
+
+    public class  MyLocationListener implements BDLocationListener{
+
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            if (bdLocation.getLocType() == BDLocation.TypeGpsLocation||bdLocation.getLocType() == BDLocation.TypeNetWorkLocation){
+                navigateTo(bdLocation);
+            }
+        }
     }
 
     @Override
