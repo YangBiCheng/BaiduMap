@@ -90,26 +90,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        baiduMap.showMapPoi(false);//将底图标注设置为隐藏
-
-        LatLng pt1 = new LatLng(39.93923, 116.357428);
-        LatLng pt2 = new LatLng(39.91923, 116.327428);
-        LatLng pt3 = new LatLng(39.89923, 116.347428);
-        LatLng pt4 = new LatLng(39.89923, 116.367428);
-        LatLng pt5 = new LatLng(39.91923, 116.387428);
-        List<LatLng> pts = new ArrayList<LatLng>();
-        pts.add(pt1);
-        pts.add(pt2);
-        pts.add(pt3);
-        pts.add(pt4);
-        pts.add(pt5);
-        //构建用户绘制多边形的Option对象
-        OverlayOptions polygonOption = new PolygonOptions()
-                .points(pts)
-                .stroke(new Stroke(5, 0xAA00FF00))
-                .fillColor(0xAAFFFF00);
-        //在地图上添加多边形Option，用于显示
-        baiduMap.addOverlay(polygonOption);
+//        baiduMap.showMapPoi(false);//将底图标注设置为隐藏
+//
+//        LatLng pt1 = new LatLng(39.93923, 116.357428);
+//        LatLng pt2 = new LatLng(39.91923, 116.327428);
+//        LatLng pt3 = new LatLng(39.89923, 116.347428);
+//        LatLng pt4 = new LatLng(39.89923, 116.367428);
+//        LatLng pt5 = new LatLng(39.91923, 116.387428);
+//        List<LatLng> pts = new ArrayList<LatLng>();
+//        pts.add(pt1);
+//        pts.add(pt2);
+//        pts.add(pt3);
+//        pts.add(pt4);
+//        pts.add(pt5);
+//        //构建用户绘制多边形的Option对象
+//        OverlayOptions polygonOption = new PolygonOptions()
+//                .points(pts)
+//                .stroke(new Stroke(5, 0xAA00FF00))
+//                .fillColor(0xAAFFFF00);
+//        //在地图上添加多边形Option，用于显示
+//        baiduMap.addOverlay(polygonOption);
 
     }
 
